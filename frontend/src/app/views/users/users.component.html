@@ -1,0 +1,76 @@
+<div class="animated fadeIn">
+  <div class="mb-3">
+    <button style="height: 35px; white-space: nowrap" type="button" class="btn btn-outline-primary" [routerLink]="['./newuser']">
+      <i class="icon-user-follow mr-1"></i>Nuevo
+    </button>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td class="align-middle">{{user.UserId}}</td>
+        <td class="align-middle">{{user.FirstName}}</td>
+        <td class="align-middle">{{user.LastName}}</td>
+        <td class="align-middle">{{user.Email}}</td>
+        <td class="align-middle">{{user.Role}}</td>
+        <td style="white-space: nowrap">
+          <button class="btn text-primary icon-note" (click)="onEdit($event, user)"></button>
+          <button class="btn text-primary icon-close" data-toggle="modal" (click)="onDeleteRequest($event, user)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal advertencia eliminar usuario -->
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-warning modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar usuario</h4>
+        <button type="button" class="close" (click)="onDeleteCancel($event)" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Confirma que desea eliminar el usuario {{ selectedUser?.UserId }} ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onDeleteCancel($event)">Cancelar</button>
+        <button type="button" class="btn btn-warning"(click)="onDeleteOk($event)">Confirmar
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isDeleting"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal advertencia eliminar usuario -->
+<div bsModal #mogModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-danger modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Usuario mgonzalez738</h4>
+        <button type="button" class="close" aria-label="Close" (click)="onMogCancel($event)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>No se puede editar ni borrar !!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="onMogCancel($event)">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
