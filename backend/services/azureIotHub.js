@@ -32,9 +32,9 @@ exports.CreateDevice = async (deviceId, isEdge) => {
     };
 
     const result = await registry.create(deviceInfo);
-    return result;//HostName=" + process.env.IOT_HUB_HOST + ";" +
-           //"DeviceId=" + result.responseBody.deviceId + ";" +
-           //"SharedAccessKey=" + result.responseBody.authentication.symmetricKey.primaryKey;
+    return 'HostName=' + process.env.IOT_HUB_HOST + ';' + 
+           'DeviceId=' + result.responseBody.deviceId + ';' +
+           'SharedAccessKey=' + result.responseBody.authentication.symmetricKey.primaryKey;
 }
 
 exports.DeleteDevice = async (deviceId) => {

@@ -8,3 +8,8 @@ El objeto de este proyecto es finalizar la asignatura Desarrollo de Aplicaciones
 
 La aplicacion puede accederse desde:
 https://giemonitoring.azurewebsites.net
+
+## Descripción General
+
+
+<img src="./doc/img1.png" width="600" />

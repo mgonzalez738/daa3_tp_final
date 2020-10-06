@@ -25,6 +25,7 @@ const logRoutes = require('./routes/logRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const gatewayRoutes = require('./routes/gatewayRoute');
+const sensorTempHumRoutes = require('./routes/sensorTempHumRoutes');
 const sensorVwsgPipe3Routes = require('./routes/sensorVwsgPipe3Routes');
 const { Authenticate } = require('./middleware/authorization');
 const errorHandler = require("./middleware/errorHandler");
@@ -59,6 +60,7 @@ app.use("/api/logs", Authenticate, logRoutes);
 app.use("/api/companies", Authenticate, companyRoutes);
 app.use("/api/projects", Authenticate, projectRoutes);
 app.use("/api/gateways", gatewayRoutes);
+app.use("/api/sensors/temphum", Authenticate, sensorTempHumRoutes);
 app.use("/api/sensors/vwsgPipe3", Authenticate, sensorVwsgPipe3Routes);
 // Rutas invalidas
 
