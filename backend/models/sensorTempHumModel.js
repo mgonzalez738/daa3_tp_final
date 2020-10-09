@@ -9,6 +9,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 const SensorSchema = new mongoose.Schema(
 { 
+    _id: { type: mongoose.Schema.Types.ObjectId },
     Name: { type: String, required: true },
     Location: { 
         latitude: { type: Number },
@@ -22,7 +23,7 @@ const SensorSchema = new mongoose.Schema(
     ProjectId: { type: mongoose.Schema.Types.ObjectId, required: true },
     CreatedAt: { type: Date, default: Date.now } 
 }, { id: false, toJSON: { virtuals: true }, toObject: { virtuals: true }});
-SensorSchema.index({ DeviceId: 1, ClientId: 1 }, { unique: true });
+SensorSchema.index({ Name: 1, ClientId: 1 }, { unique: true });
 
 // Virtuals
 
@@ -57,7 +58,9 @@ SensorSchema.pre('save', async function(next) {
         if(!project) {
             return next(new ErrorResponse('ProjectId not found', 400));
         }
-    } 
+    }
+    // Verifica que el proyecto corresponda al mismo cliente 
+    if(this.isModified('ProjectId'))
     next();  
 });
 
@@ -83,10 +86,10 @@ exports.SensorTempHum = Sensor;
 // Esquema Datos
 
 const DataSchema = new mongoose.Schema({ 
-    SensorId: { type: mongoose.Schema.Types.ObjectId, required: true },
     Timestamp: { type: Date, required: true },
-    Temperature: { type: Number},
-    Humidity: { type: Number }
+    Temperature: { type: Number },
+    Humidity: { type: Number },
+    SensorId: { type: mongoose.Schema.Types.ObjectId, required: true }
 }, { id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 DataSchema.index({ Timestamp: 1 });
 
@@ -127,14 +130,14 @@ DataSchema.method('toJSON', function() {
 // Modelo
 
 const Data = mongoose.model('DataTempHum', DataSchema, 'DataTempHum');
-exports.DataTempHum = Sensor;
+exports.DataTempHum = Data;
 
 // Esquema Eventos
 
 const EventSchema = new mongoose.Schema({ 
     SensorId: { type: mongoose.Schema.Types.ObjectId, required: true },
     Timestamp: { type: Date, required: true },
-    Event: { type: String, required: true },
+    Message: { type: String, required: true },
 }, { id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 DataSchema.index({ Timestamp: 1 });
 
@@ -175,4 +178,4 @@ EventSchema.method('toJSON', function() {
 // Modelo
 
 const Event = mongoose.model('EventTempHum', EventSchema, 'EventTempHum');
-exports.EventTempHum = Sensor;
+exports.EventTempHum = Event;

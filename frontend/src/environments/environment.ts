@@ -7,6 +7,7 @@ import { AuthenticationType } from 'azure-maps-control';
 
 export const environment = {
   production: false,
+  socketEndpoint: "http://localhost:3000",
   backendApiUrl: "http://localhost:3000/api",
   azureMapAuthOptions: {
     authType: AuthenticationType.subscriptionKey,

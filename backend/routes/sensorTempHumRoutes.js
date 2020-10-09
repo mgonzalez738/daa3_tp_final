@@ -5,9 +5,17 @@ const SensorTempHumController = require('../controllers/sensorTempHumController'
 const { Authorize } = require('../middleware/authorization');
 const {  } = require('../validations/commonValidators');
 
-/*
 // GETS
 
+router.get('/:sensorId/data',
+    [ 
+        Authorize('super', 'administrator', 'user', 'guest'),
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
+    ],
+    SensorTempHumController.indexData 
+);
+
+/*
 router.get('/:projectId',
     [ 
         Authorize('super', 'administrator', 'user', 'guest'),
