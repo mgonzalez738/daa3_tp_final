@@ -3,7 +3,7 @@ const router = express.Router();
 
 const SensorTempHumController = require('../controllers/sensorTempHumController');
 const { Authorize } = require('../middleware/authorization');
-const {  } = require('../validations/commonValidators');
+const { querySkipIsInt, queryLimitIsInt, queryProjectIdIsMongoId, queryClientIdIsMongoId } = require('../validations/commonValidators');
 
 // GETS
 
@@ -15,23 +15,22 @@ router.get('/:sensorId/data',
     SensorTempHumController.indexData 
 );
 
-/*
-router.get('/:projectId',
+router.get('/:sensorId',
     [ 
         Authorize('super', 'administrator', 'user', 'guest'),
-        paramProjectIdIsMongoId, queryPopulateIsBoolean
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
     ],
-    ProjectController.showProject   
+    SensorTempHumController.showSensor  
 );
 
 router.get('/',
     [ 
         Authorize('super', 'administrator', 'user', 'guest'),
-        querySkipIsInt, queryLimitIsInt, queryClientIdIsMongoId
+        querySkipIsInt, queryLimitIsInt, queryProjectIdIsMongoId, queryClientIdIsMongoId
     ],
-    ProjectController.indexProject
+    SensorTempHumController.indexSensor
 );
-*/
+
 // POST
 
 router.post('/',

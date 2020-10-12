@@ -45,6 +45,10 @@ exports.indexSensor = async (req, res, next) => {
         if(req.query.name) {
             AggregationArray.push({ $match : { Name: req.query.name }});
         }
+        // Filtra por ProjectId si esta definido
+        if(req.query.projectid) {
+            AggregationArray.push({ $match : { ProjectId: new mongoose.Types.ObjectId(req.query.projectid) }});
+        }
         // Ordena por Name
         AggregationArray.push({ $sort : { Name: 1, ClientId: 1}});
          // Oculta campos
@@ -90,7 +94,7 @@ exports.indexSensor = async (req, res, next) => {
         {
             // Sin paginacion
             let result = await SensorTempHum.aggregate(AggregationArray);
-            Logger.Save(Levels.Info, 'Database', `${result.length} sensors retrieved from ${sensorsCollectionName}`, req.user._id);
+            Logger.Save(Levels.Info, 'Database', `${result.length} sensors retrieved from ${sensorCollectionName}`, req.user._id);
             res.send({ Success: true, Data: result });
         }
 
@@ -98,6 +102,51 @@ exports.indexSensor = async (req, res, next) => {
     } catch (error) {
         Logger.Save(Levels.Error, 'Database', `Error retrieving sensors from ${sensorCollectionName} -> ${error.message}`, req.user._id);
         return next(error);
+    }
+};
+
+exports.showSensor = async (req, res, next) => {
+    
+    // Valida los datos del pedido
+    let logMessage = `${req.method} (${req.originalUrl}) | Retrieve sensor ${req.params.sensorId} from ${sensorCollectionName}`;  
+    try { 
+        validationHandler(req);
+    }
+    catch (error) {
+        logMessage += ' -> Validation Error';
+        Logger.Save(Levels.Warning, 'Api', logMessage, req.user._id); 
+        return next(new ErrorResponse(error.message, error.statusCode, error.validation));
+    }
+    Logger.Save(Levels.Debug, 'Api', logMessage, req.user._id); 
+    
+    // Procesa el pedido 
+    try {
+        // Busqueda
+        let sensor;
+        if(req.user.Role ==='super') { // Oculta ClientId sino es super
+            sensor = await SensorTempHum.findById(req.params.sensorId)
+        }
+        else {
+            sensor = await SensorTempHum.findById(req.params.sensorId).select('-ClientId');
+        }
+        if(req.query.populate) {
+            if(req.user.Role ==='super') { // Populate Client si es super
+                await sensor.populate('Client').execPopulate();
+            }
+            await sensor.populate('Project').execPopulate();
+        }
+        if(!sensor) {
+            Logger.Save(Levels.Info, 'Database', `Sensor ${req.params.sensorId} not found in ${sensorCollectionName}`, req.user._id);
+            return next(new ErrorResponse('Sensor not found', 404));
+        }
+        // Respuesta
+        Logger.Save(Levels.Info, 'Database', `Sensor ${req.params.sensorId} retrieved from ${sensorCollectionName}`, req.user._id);
+        res.send( {Success: true, Data: sensor});
+    
+    // Errores inesperados
+    } catch (error) {
+        Logger.Save(Levels.Error, 'Database', `Error retrieving sensor ${req.params.sensorId} from ${sensorCollectionName} -> ${error.message}`, req.user._id);
+        return next(error);   
     }
 };
 
@@ -141,7 +190,7 @@ exports.storeSensor = async (req, res, next) => {
         let _id = new mongoose.Types.ObjectId().toHexString();
         let tags = { Location };
          if(!Configuration) {
-            Configuration = { PollPeriod: 5 }
+            Configuration = { PollPeriod: 1 }
         }
 
         // Crea el dispositivo en el hub
@@ -220,7 +269,7 @@ exports.indexData = async (req, res, next) => {
     try {
         let AggregationArray = [];
         // Filtra por sensorId
-        //AggregationArray.push({ $match : { SensorId: req.params.sensorId }});
+        AggregationArray.push({ $match : { SensorId: new mongoose.Types.ObjectId(req.params.sensorId) }});
         // Filtra por From si esta definido
         if(req.query.from !== undefined) {
              AggregationArray.push({ $match : { Timestamp: { $gte: new Date(req.query.from)}}});

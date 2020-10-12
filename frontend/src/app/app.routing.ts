@@ -67,7 +67,7 @@ export const routes: Routes = [
       },
       {
         path: 'devices',
-        loadChildren: () => import('./views/building/building.module').then(m => m.BuildingModule)
+        loadChildren: () => import('./views/devices/devices.module').then(m => m.DevicesModule)
       },
       {
         path: 'users',

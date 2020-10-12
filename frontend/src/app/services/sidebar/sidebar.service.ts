@@ -49,8 +49,8 @@ export class SidebarService {
     navItems.push(item);
 
     // Dispositivos
-    item = { name: 'Dispositivos', url: '/devices', icon: 'icon-puzzle', children: [] };
-    item.children.push( { name: 'Temperatura', url: '/devices' } );
+    item = { name: 'Dispositivos', url: '/devices', icon: 'icon-puzzle', children: []};
+    item.children.push( { name: 'Temperatura Humedad', url: '/devices/temphum'} );
     navItems.push(item);
 
     // Configuracion

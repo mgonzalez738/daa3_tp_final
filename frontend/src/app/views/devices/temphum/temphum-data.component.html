@@ -1,0 +1,78 @@
+<div class="animated fadeIn">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">{{sensor?.Name}}</a>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+    <button aria-controls="navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" class="navbar-toggler" type="button" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" [collapse]="isCollapsed" [isAnimated]="true">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Hour" id="option1" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Hora</label>
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Day" id="option2" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Día</label>
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Week" id="option3" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Semana</label>
+      </div>
+      <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+        <label class="btn btn-outline-primary" [(ngModel)]="radioShow" btnRadio="Plot" id="option4" (click)="onShowChange($event)" [ngClass]="{'disabled': isLoading }">Gráfico</label>
+        <label class="btn btn-outline-primary" [(ngModel)]="radioShow" btnRadio="Table" id="option5" (click)="onShowChange($event)" [ngClass]="{'disabled': isLoading }">Tabla</label>
+      </div>
+      <button type="button" class="btn btn-primary" [ngClass]="{'disabled': isLoading }"><i class="icon-cloud-download"></i></button>
+    </div>
+  </nav>
+
+  <div class="mb-3">
+    <span class="text-dark">
+
+    </span>
+  </div>
+
+  <div class="chart-wrapper" *ngIf="loaded && radioShow == 'Plot'" >
+    <canvas baseChart class="chart" id="chart"
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [colors]="lineChartColours"
+    [legend]="lineChartLegend"
+    [chartType]="lineChartType"
+    ></canvas>
+  </div>
+
+  <table class="table" *ngIf="loaded && radioShow == 'Table'">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Temperatura [°C]</th>
+        <th>Humedad [°%]</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let datum of data">
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Timestamp }}</span></td>
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Temperature | number:'1.2-2'}}</span></td>
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Humidity | number:'1.2-2'}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row align-middle justify-content-center" *ngIf="loaded && radioShow == 'Table'">
+    <div class="col text-center">
+      <pagination
+        [totalItems]="dataTotalItems"
+        [itemsPerPage]="dataItemsPerPage"
+        [(ngModel)]="dataCurrentPage"
+        [maxSize]="paginatorMaxSize"
+        class="pagination justify-content-center"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+        [boundaryLinks]="true"
+        [rotate]="false"
+        (pageChanged)="pageChanged($event)">
+      </pagination>
+      <span class="text-primary">Items {{dataFirstItemShown}} a {{ dataLastItemShown }} de {{ dataTotalItems }}</span>
+    </div>
+  </div>
+
+
+</div>
+

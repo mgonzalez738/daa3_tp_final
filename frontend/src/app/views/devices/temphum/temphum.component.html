@@ -1,0 +1,57 @@
+<div class="animated fadeIn">
+  <div class="mb-3">
+    <button style="height: 35px; white-space: nowrap" type="button" class="btn btn-outline-primary">
+      Agregar
+    </button>
+  </div>
+
+  <table class="table">
+    <thead >
+      <tr class="table-primary">
+        <th scope="col">Nombre</th>
+        <th scope="col">Ubicación</th>
+        <th scope="col align-rigth"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sensor of sensors">
+        <td class="align-left align-middle">{{sensor?.Name}}</td>
+        <td class="align-left align-middle" style="white-space: nowrap;">
+          {{sensor.Location?.Latitude}}°
+          {{sensor.Location?.Longitude}}°
+          <button class="btn text-primary icon-location-pin ml-n2 mt-n1" data-toggle="tooltip" data-placement="top" title="Ver en mapa" (click)="onLocation($event, sensor)"></button>
+        </td>
+        <td>
+          <div style="white-space: nowrap; float: right;" >
+            <button class="btn text-primary icon-graph ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Datos" (click)="onData($event, sensor)"></button>
+            <button class="btn text-primary icon-note ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Editar" (click)="onEdit($event, sensor)"></button>
+            <button class="btn text-primary icon-close ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="onDeleteRequest($event, sensor)"></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal advertencia eliminar dispositivo -->
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-warning modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar sensor</h4>
+        <button type="button" class="close" (click)="onDeleteCancel($event)" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Confirma que desea eliminar el sensor {{ selectedSensor?.Name }} ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onDeleteCancel($event)">Cancelar</button>
+        <button type="button" class="btn btn-warning"(click)="onDeleteOk($event)">Confirmar
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isDeleting"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
