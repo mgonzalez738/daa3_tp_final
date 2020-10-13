@@ -51,7 +51,7 @@ export const routes: Routes = [
       },
       {
         path: 'map',
-        loadChildren: () => import('./views/building/building.module').then(m => m.BuildingModule),
+        loadChildren: () => import('./views/map/map.module').then(m => m.MapModule),
       },
       {
         path: 'sites',

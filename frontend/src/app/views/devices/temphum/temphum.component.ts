@@ -30,6 +30,7 @@ export class TempHumComponent implements OnInit {
   }
 
   onLocation(event, sensor: SensorTempHum) {
+    this.router.navigate([`map`, sensor._id]);
   }
 
   onData(event, sensor: SensorTempHum) {
