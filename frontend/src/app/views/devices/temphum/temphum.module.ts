@@ -13,6 +13,7 @@ import { TempHumRoutingModule } from './temphum-routing.module';
 import { TempHumLayoutComponent } from './temphum-layout.component';
 import { TempHumComponent } from './temphum.component';
 import { TempHumDataComponent } from './temphum-data.component';
+import { TempHumEventComponent } from './temphum-event.component';
 
 
 
@@ -30,7 +31,8 @@ import { TempHumDataComponent } from './temphum-data.component';
   declarations: [
     TempHumLayoutComponent,
     TempHumComponent,
-    TempHumDataComponent
+    TempHumDataComponent,
+    TempHumEventComponent
   ]
 })
 

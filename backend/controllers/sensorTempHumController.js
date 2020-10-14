@@ -251,6 +251,42 @@ exports.deleteSensor = async (req, res, next) => {
     }
 };
 
+exports.execMethodSensor = async (req, res, next) => {
+    
+    // Valida los datos del pedido
+    let logMessage = `${req.method} (${req.originalUrl}) | Execute ${req.params.method} in sensor ${req.params.sensorId}`;  
+    try { 
+        validationHandler(req);
+    }
+    catch (error) {
+        logMessage += ' -> Validation Error';
+        Logger.Save(Levels.Warning, 'Api', logMessage, req.user._id); 
+        return next(new ErrorResponse(error.message, error.statusCode, error.validation));
+    }
+    Logger.Save(Levels.Debug, 'Api', logMessage, req.user._id); 
+    
+    // Procesa el pedido 
+    try {
+        // Busqueda
+        let sensor = await SensorTempHum.findById(req.params.sensorId);
+        await sensor.populate('Client').execPopulate();
+        if(!sensor) {
+            Logger.Save(Levels.Info, 'Database', `Sensor ${req.params.sensorId} not found in ${sensorCollectionName}`, req.user._id);
+            return next(new ErrorResponse('Sensor not found', 404));
+        }
+
+        // Ejecuta el metodo
+        let id = sensor.Client.Tag + '-' + sensor.Name;
+        let result = await iotHub.CallDirectMethod(id, req.params.method, undefined);
+        res.send( {Success: true, Data: result.result.payload } );
+    
+    // Errores inesperados
+    } catch (error) {
+        //Logger.Save(Levels.Error, 'Database', `Error retrieving sensor ${req.params.sensorId} from ${sensorCollectionName} -> ${error.message}`, req.user._id);
+        return next(error);   
+    }
+}
+
 exports.indexData = async (req, res, next) => {
     
     // Valida los datos del pedido
@@ -352,7 +388,7 @@ exports.indexEvent = async (req, res, next) => {
     try {
         let AggregationArray = [];
         // Filtra por sensorId
-        AggregationArray.push({ $match : { SensorId: req.params.sensorId }});
+        AggregationArray.push({ $match : { SensorId: new mongoose.Types.ObjectId(req.params.sensorId) }});
         // Filtra por From si esta definido
         if(req.query.from !== undefined) {
              AggregationArray.push({ $match : { Timestamp: { $gte: new Date(req.query.from)}}});
@@ -405,7 +441,7 @@ exports.indexEvent = async (req, res, next) => {
         else
         {
             // Sin paginacion
-            let result = await DataTempHum.aggregate(AggregationArray);
+            let result = await EventTempHum.aggregate(AggregationArray);
             Logger.Save(Levels.Info, 'Database', `${result.length} events retrieved from ${eventCollectionName}`, req.user._id);
             res.send({ Success: true, Data: result });
         }

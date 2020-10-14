@@ -15,42 +15,26 @@
         <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Day" id="option2" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Día</label>
         <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Week" id="option3" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Semana</label>
       </div>
-      <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
-        <label class="btn btn-outline-primary" [(ngModel)]="radioShow" btnRadio="Plot" id="option4" (click)="onShowChange($event)" [ngClass]="{'disabled': isLoading }">Gráfico</label>
-        <label class="btn btn-outline-primary" [(ngModel)]="radioShow" btnRadio="Table" id="option5" (click)="onShowChange($event)" [ngClass]="{'disabled': isLoading }">Tabla</label>
-      </div>
       <button type="button" class="btn btn-primary" [ngClass]="{'disabled': isLoading }"><i class="icon-cloud-download"></i></button>
     </div>
   </nav>
 
-  <div class="chart-wrapper" *ngIf="loaded && radioShow == 'Plot'" >
-    <canvas baseChart class="chart" id="chart"
-    [datasets]="lineChartData"
-    [labels]="lineChartLabels"
-    [options]="lineChartOptions"
-    [colors]="lineChartColours"
-    [legend]="lineChartLegend"
-    [chartType]="lineChartType"
-    ></canvas>
-  </div>
-
-  <table class="table" *ngIf="loaded && radioShow == 'Table'">
+  <table class="table" *ngIf="loaded">
     <thead>
       <tr>
         <th>Timestamp</th>
-        <th>Temperatura [°C]</th>
-        <th>Humedad [°%]</th>
+        <th>Mensaje</th>
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let datum of data">
-        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Timestamp }}</span></td>
-        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Temperature | number:'1.2-2'}}</span></td>
-        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{datum.Humidity | number:'1.2-2'}}</span></td>
+      <tr *ngFor="let evt of event">
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{ evt.Timestamp }}</span></td>
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{ evt.Message }}</span></td>
       </tr>
     </tbody>
   </table>
-  <div class="row align-middle justify-content-center" *ngIf="loaded && radioShow == 'Table'">
+
+  <div class="row align-middle justify-content-center" *ngIf="loaded">
     <div class="col text-center">
       <pagination
         [totalItems]="dataTotalItems"

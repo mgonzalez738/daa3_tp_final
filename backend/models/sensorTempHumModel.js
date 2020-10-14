@@ -139,7 +139,7 @@ const EventSchema = new mongoose.Schema({
     Timestamp: { type: Date, required: true },
     Message: { type: String, required: true },
 }, { id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } });
-DataSchema.index({ Timestamp: 1 });
+EventSchema.index({ Timestamp: 1 });
 
 // Virtuals
 

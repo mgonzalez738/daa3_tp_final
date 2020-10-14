@@ -7,13 +7,13 @@
 #include "DHT.h"
 
 // DATOS DE CONEXION DEL DISPOSITIVO
-#define DEVICE_ID "CEIoT-Esp32-A"
-//#define DEVICE_ID "CEIoT-Esp32-B"
-#define MONGO_ID "5f7e8600bf704300353b1a43"
-//#define MONGO_ID "5f7e8761bf704300353b1ae7"
+//#define DEVICE_ID "CEIoT-Esp32-A"
+#define DEVICE_ID "CEIoT-Esp32-B"
+//#define MONGO_ID "5f7e8600bf704300353b1a43"
+#define MONGO_ID "5f7e8761bf704300353b1ae7"
 #define DEVICE_TYPE "SensorTempHum"
-static const char* connectionString = "HostName=MonitoringHub.azure-devices.net;DeviceId=CEIoT-Esp32-A;SharedAccessKey=yd50JChs28iFp44VESQMB+/9A2ge4c55fOKik3xXGpg=";
-//static const char* connectionString = "HostName=MonitoringHub.azure-devices.net;DeviceId=CEIoT-Esp32-B;SharedAccessKey=IQHA0PZMI4Vzjj1BkzaBXswSizjBLI2TKkcYr0haGTk=";
+//static const char* connectionString = "HostName=MonitoringHub.azure-devices.net;DeviceId=CEIoT-Esp32-A;SharedAccessKey=yd50JChs28iFp44VESQMB+/9A2ge4c55fOKik3xXGpg=";
+static const char* connectionString = "HostName=MonitoringHub.azure-devices.net;DeviceId=CEIoT-Esp32-B;SharedAccessKey=IQHA0PZMI4Vzjj1BkzaBXswSizjBLI2TKkcYr0haGTk=";
 
 // CONFIGURACION
 #define MESSAGE_MAX_LEN 256
@@ -23,7 +23,7 @@ static const char* connectionString = "HostName=MonitoringHub.azure-devices.net;
 #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
 
 // WIFI
-const char* ssid     = "GyMFondo";
+const char* ssid     = "GyM24";
 const char* password = "matangalatanga";
 
 // MENSAJE DATOS
@@ -41,6 +41,7 @@ static bool messageSending = true;
 static bool sendLedOnEvent = false;
 static bool sendLedOffEvent = false;
 static uint64_t send_interval_ms;
+bool ledStatus = false;
 
 // Initialize DHT sensor.
 DHT dht(DHTPIN, DHTTYPE);
@@ -109,15 +110,25 @@ static int  DeviceMethodCallback(const char *methodName, const unsigned char *pa
   }
   else if (strcmp(methodName, "ledOn") == 0)
   {
-    LogInfo("Len On");
+    LogInfo("Led On");
+    ledStatus = true;
     digitalWrite(ONBOARD_LED, HIGH);
     sendLedOnEvent = true;
   }
   else if (strcmp(methodName, "ledOff") == 0)
   {
-    LogInfo("Len Off");
+    LogInfo("Led Off");
+    ledStatus = false;
     digitalWrite(ONBOARD_LED, LOW);
     sendLedOffEvent = true;
+  }
+  else if (strcmp(methodName, "ledStatus") == 0)
+  {
+    LogInfo("Led Status");
+    if(ledStatus == true)
+      responseMessage = "\"true\"";
+    else
+      responseMessage = "\"false\"";
   }
   else
   {
@@ -126,7 +137,7 @@ static int  DeviceMethodCallback(const char *methodName, const unsigned char *pa
     result = 404;
   }
 
-  *response_size = strlen(responseMessage) + 1;
+  *response_size = strlen(responseMessage);
   *response = (unsigned char *)strdup(responseMessage);  
 
   return result;
@@ -220,8 +231,8 @@ void loop()
         }
 
         // Send teperature data
-        float temperature = dht.readTemperature();//(float)random(0,50);
-        float humidity = dht.readHumidity();//(float)random(0, 1000)/10;
+        float temperature = (float)random(5,35);//dht.readTemperature();
+        float humidity = (float)random(100, 900)/10; //dht.readHumidity();
         snprintf(messagePayload,MESSAGE_MAX_LEN, messageData, dayTime, temperature,humidity);
         Serial.println(messagePayload);
         EVENT_INSTANCE* message = Esp32MQTTClient_Event_Generate(messagePayload, MESSAGE);

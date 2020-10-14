@@ -25,3 +25,14 @@ export class DataTempHum {
 
   constructor(){ }
 }
+
+export class EventTempHum {
+  public _id: string;
+  public Timestamp: Date;
+  public Message: string;
+  public SensorId: string;
+
+  constructor(){ }
+}
+
+

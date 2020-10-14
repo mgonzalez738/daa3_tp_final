@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment'
-import { SensorTempHum, DataTempHum } from '../../models/sensorTempHumModel'
+import { SensorTempHum, DataTempHum, EventTempHum } from '../../models/sensorTempHumModel'
 import { PaginationData } from '../../models/paginationDataModel'
 
 @Injectable({ providedIn: 'root' })
@@ -28,6 +28,12 @@ export class SensorTempHumService {
   async getSensorsByName(sensorname: string): Promise<SensorTempHum> {
     let res = await this.http.get<{Data: SensorTempHum[]}>(this.urlApi + "/sensors/temphum?name=" + sensorname).toPromise();
     return res.Data[0];
+  }
+
+  // Obtiene un sensores por Project
+  async getSensorsByProjectId(projectid: string): Promise<SensorTempHum[]> {
+    let res = await this.http.get<{Data: SensorTempHum[]}>(this.urlApi + "/sensors/temphum?projectid=" + projectid).toPromise();
+    return res.Data;
   }
 
   // Guarda un sensor
@@ -59,6 +65,36 @@ export class SensorTempHumService {
     }
     let res = await this.http.get<{Pagination: PaginationData, Data: DataTempHum[]}>(this.urlApi + "/sensors/temphum/" + id + '/data' + query).toPromise();
     return res;
+  }
+
+  // Obtiene los eventos de un sensor
+  async getSensorsEvent(id: string, from: Date, to: Date, limit?: number, skip?: number): Promise<{Pagination: PaginationData, Data: EventTempHum[]}> {
+    let query = `?from=${from}&to=${to}`;
+    if(limit) {
+      query += `&limit=${limit}`;
+    }
+    if(skip) {
+      query += `&skip=${skip}`;
+    }
+    let res = await this.http.get<{Pagination: PaginationData, Data: EventTempHum[]}>(this.urlApi + "/sensors/temphum/" + id + '/event' + query).toPromise();
+    return res;
+  }
+
+  async setLedStatus(id: string, status: boolean): Promise<void> {
+    if(status) {
+      await this.http.post(this.urlApi + "/sensors/temphum/" + id + "/method/ledOn", {}).toPromise();
+    } else {
+      await this.http.post(this.urlApi + "/sensors/temphum/" + id + "/method/ledOff", {}).toPromise();
+    }
+    return;
+  }
+
+  async getLedStatus(id: string): Promise<boolean> {
+    let res = await this.http.post<{Data: string}>(this.urlApi + "/sensors/temphum/" + id + "/method/ledStatus", {}).toPromise();
+    if(res.Data == "true")
+      return true;
+    else
+      return false;
   }
 
 }

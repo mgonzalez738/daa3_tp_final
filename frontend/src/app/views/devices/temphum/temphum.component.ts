@@ -37,6 +37,10 @@ export class TempHumComponent implements OnInit {
     this.router.navigate([`devices/temphum/data`, sensor._id]);
   }
 
+  onEvent(event, sensor: SensorTempHum) {
+    this.router.navigate([`devices/temphum/event`, sensor._id]);
+  }
+
   onEdit(event, sensor: SensorTempHum) {
     this.router.navigate(['/sensorsTempHum', sensor.Name]);
   }

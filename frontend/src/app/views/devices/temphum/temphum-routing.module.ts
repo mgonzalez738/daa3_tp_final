@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TempHumLayoutComponent } from './temphum-layout.component';
 import { TempHumComponent } from './temphum.component';
 import { TempHumDataComponent } from './temphum-data.component';
+import { TempHumEventComponent } from './temphum-event.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,13 @@ const routes: Routes = [
         component: TempHumDataComponent,
         data: {
           title: 'Datos'
+        }
+      },
+      {
+        path: 'event/:sensorid',
+        component: TempHumEventComponent,
+        data: {
+          title: 'Eventos'
         }
       },
       {

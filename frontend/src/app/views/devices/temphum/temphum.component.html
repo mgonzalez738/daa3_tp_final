@@ -24,8 +24,9 @@
         <td>
           <div style="white-space: nowrap; float: right;" >
             <button class="btn text-primary icon-graph ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Datos" (click)="onData($event, sensor)"></button>
+            <button class="btn text-primary cui-tags ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eventos" (click)="onEvent($event, sensor)"></button>
             <button class="btn text-primary icon-note ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Editar" (click)="onEdit($event, sensor)"></button>
-            <button class="btn text-primary icon-close ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="onDeleteRequest($event, sensor)"></button>
+            <button class="btn text-primary cui-trash ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="onDeleteRequest($event, sensor)"></button>
           </div>
         </td>
       </tr>

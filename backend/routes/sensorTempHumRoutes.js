@@ -15,6 +15,14 @@ router.get('/:sensorId/data',
     SensorTempHumController.indexData 
 );
 
+router.get('/:sensorId/event',
+    [ 
+        Authorize('super', 'administrator', 'user', 'guest'),
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
+    ],
+    SensorTempHumController.indexEvent 
+);
+
 router.get('/:sensorId',
     [ 
         Authorize('super', 'administrator', 'user', 'guest'),
@@ -32,6 +40,14 @@ router.get('/',
 );
 
 // POST
+
+router.post('/:sensorId/method/:method',
+    [ 
+        Authorize('super', 'administrator', 'user', 'guest'),
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
+    ],
+    SensorTempHumController.execMethodSensor
+);
 
 router.post('/',
     [ 

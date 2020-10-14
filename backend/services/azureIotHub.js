@@ -15,7 +15,7 @@ var iotHubConnectionString = "HostName=" + process.env.IOT_HUB_HOST + ";" +
 
 let registry = Registry.fromConnectionString("HostName=MonitoringHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=aOFsWnGlHYPBUyO+J4QJtrq7zXITgnxlHuOewLiyTpU=");                           
 let consumer = new EventHubConsumerClient(process.env.IOT_HUB_EVENT_CONSUMER_GROUP, process.env.IOT_HUB_EVENT_ENDPOINT);
-let client = Client.fromConnectionString(iotHubConnectionString);
+let client = Client.fromConnectionString("HostName=MonitoringHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=aOFsWnGlHYPBUyO+J4QJtrq7zXITgnxlHuOewLiyTpU=");
 
 exports.Suscribe = () => {
     consumer.subscribe({
@@ -148,4 +148,26 @@ exports.GetDevice = async (deviceId) => {
     const result = await registry.get(deviceId);
     return result.responseBody;
 
+}
+
+exports.CallDirectMethod = async (deviceId, method, data) => {
+
+    if(!data) {
+        data = {};
+    }
+
+    let methodParams = {
+        methodName: method,
+        payload: data, 
+        responseTimeoutInSeconds: 30
+    };
+
+    // Call the direct method on your device using the defined parameters.
+    try {
+        let result = await client.invokeDeviceMethod(deviceId, methodParams);
+        return result;
+    }
+    catch(error) {
+        throw error;
+    }
 }
