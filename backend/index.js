@@ -16,7 +16,7 @@ const { bodyUserIdRequired, bodyPasswordRequired } = require('./validations/user
 
 const { DbName, DbConnectionString, DbConnectionOptions} = require('./database/cosmos');
 
-const iotHubEventConsumer = require('./consumers/iotHubEventConsumer');
+const AzureIotHub = require('./services/azureIotHub');
 const ftpServer = require('./consumers/ftpConsumer');
 
 const clientRoutes = require('./routes/clientRoutes');
@@ -25,6 +25,7 @@ const logRoutes = require('./routes/logRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const gatewayRoutes = require('./routes/gatewayRoute');
+const sensorTempHumRoutes = require('./routes/sensorTempHumRoutes');
 const sensorVwsgPipe3Routes = require('./routes/sensorVwsgPipe3Routes');
 const { Authenticate } = require('./middleware/authorization');
 const errorHandler = require("./middleware/errorHandler");
@@ -32,6 +33,12 @@ const errorHandler = require("./middleware/errorHandler");
 const listenPort = process.env.PORT;
 
 const app = express();
+const http = require('http').createServer(app);
+
+const io = require('socket.io')(http);
+
+var ioMsg = require('./services/azureIotHub').ioMsg(io);
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -59,6 +66,7 @@ app.use("/api/logs", Authenticate, logRoutes);
 app.use("/api/companies", Authenticate, companyRoutes);
 app.use("/api/projects", Authenticate, projectRoutes);
 app.use("/api/gateways", gatewayRoutes);
+app.use("/api/sensors/temphum", Authenticate, sensorTempHumRoutes);
 app.use("/api/sensors/vwsgPipe3", Authenticate, sensorVwsgPipe3Routes);
 // Rutas invalidas
 
@@ -92,11 +100,20 @@ app.use(express.static(staticRoot));
 // Maneja errores
 app.use(errorHandler);
 
+// WebSockets
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
 // Espera la conexion a la base de datos para arrancar la app
 app.on('dbReady', function() { 
-  app.listen(listenPort, () => {
+  http.listen(listenPort, () => {
     Logger.Save(Levels.Trace, 'Api',"Start listening on port " + listenPort); 
-    iotHubEventConsumer.suscribe();
+    AzureIotHub.Suscribe();
     //ftpServer.start();
   }); 
 }); 

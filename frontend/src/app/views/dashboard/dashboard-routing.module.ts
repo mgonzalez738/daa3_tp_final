@@ -10,6 +10,13 @@ const routes: Routes = [
     data: {
       title: 'Panel General'
     }
+  },
+  {
+    path: ':projectid',
+    component: DashboardComponent,
+    data: {
+      title: 'Panel General'
+    }
   }
 ];
 

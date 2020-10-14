@@ -48,6 +48,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 
 import { AuthInterceptor } from './services/auth/auth.interceptor';
+import { SocketioService } from './services/socketio/socketio.service';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { AuthInterceptor } from './services/auth/auth.interceptor';
     LoginComponent,
   ],
   providers: [
+    SocketioService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],

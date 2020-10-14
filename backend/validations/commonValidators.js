@@ -37,6 +37,10 @@ exports.paramLogIdIsMongoId = param("logId")
 
 // QUERIES
 
+exports.queryProjectIdIsMongoId = query("projectid")
+    .optional().isMongoId()
+    .withMessage("Query 'projectid' must be a valid hex-encoded representation of a MongoDB ObjectId");
+
 exports.queryClientIdIsMongoId = query("clientid")
     .optional().isMongoId()
     .withMessage("Query 'clientid' must be a valid hex-encoded representation of a MongoDB ObjectId");

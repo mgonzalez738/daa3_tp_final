@@ -16,6 +16,7 @@ var processMessages = function (messages) {
       // Eventos de Telemetria
       if(message.systemProperties['iothub-message-source'] == "Telemetry")
       {
+        console.log(message);
         var logMessage = "\x1b[33mEventHubEndpoint(" + iotHubName + "): Telemetria";
         logMessage = logMessage + " | " + message.properties.DeviceType + "(" + message.systemProperties['iothub-connection-device-id'] + ")"; 
 

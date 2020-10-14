@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { AuthService } from './services/auth/auth.service';
+import { SocketioService } from './services/socketio/socketio.service';
 
 @Component({
   // tslint:disable-next-line
@@ -9,9 +10,14 @@ import { AuthService } from './services/auth/auth.service';
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private socketService: SocketioService
+    ) { }
 
   ngOnInit() {
+    this.socketService.setupSocketConnection();
     this.authService.autoAuthUser();
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {

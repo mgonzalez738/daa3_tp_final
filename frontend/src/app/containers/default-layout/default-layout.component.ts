@@ -47,6 +47,9 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     try {
       await this.authService.setAuthUser();
       this.authUser = this.authService.getAuthUser();
+      if(this.authUser.Project && this.router.url === '/dashboard') {
+        this.router.navigate([`dashboard`, this.authUser.Project._id]);
+      }
     }
     catch (error) {
       console.log(error);
@@ -69,7 +72,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     if(this.authUser && this.authUser.Client) {
       await this.loadProjects();
       // Genera el sidebar
-      this.sidebarService.generateNavItems();
+      //this.sidebarService.generateNavItems();
      }
   };
 
@@ -109,6 +112,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       this.authUser = this.authService.getAuthUser();
       // Actualiza el sidebar
       this.sidebarService.generateNavItems();
+      this.router.navigate([`dashboard`, this.authUser.Project._id]);
       this.projectIsLoading = false;
     } catch (error) {
       this.projectIsLoading = false;

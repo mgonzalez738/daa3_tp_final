@@ -1,0 +1,16 @@
+<div class="animated fadeIn">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sensor</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let device of deviceList">
+        <td class="align-left align-middle"><button class="btn btn-link ml-n3" (click)="onLink($event, device)">{{device.name}}</button></td>
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{device.description}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

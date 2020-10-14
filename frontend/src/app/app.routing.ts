@@ -51,7 +51,7 @@ export const routes: Routes = [
       },
       {
         path: 'map',
-        loadChildren: () => import('./views/building/building.module').then(m => m.BuildingModule),
+        loadChildren: () => import('./views/map/map.module').then(m => m.MapModule),
       },
       {
         path: 'sites',
@@ -67,7 +67,7 @@ export const routes: Routes = [
       },
       {
         path: 'devices',
-        loadChildren: () => import('./views/building/building.module').then(m => m.BuildingModule)
+        loadChildren: () => import('./views/devices/devices.module').then(m => m.DevicesModule)
       },
       {
         path: 'users',

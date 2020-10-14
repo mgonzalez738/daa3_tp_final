@@ -1,4 +1,4 @@
-<button style="height: 45px" type="button" class="btn btn-success btn-block btn-square text-left" *ngIf="enabled" routerLink="/dashboard">
+<button style="height: 45px" type="button" class="btn btn-success btn-block btn-square text-left" *ngIf="enabled" (click)="onClick($event)">
   <i class="icon-speedometer ml-2 mr-3"></i><b>Panel General</b>
 </button>
 <button style="height: 45px" type="button" class="btn btn-success btn-block btn-square text-left" disabled *ngIf="!enabled">

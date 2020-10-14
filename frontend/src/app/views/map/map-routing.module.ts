@@ -10,6 +10,13 @@ const routes: Routes = [
     data: {
       title: 'Mapa'
     }
+  },
+  {
+    path: ':sensorid',
+    component: MapComponent,
+    data: {
+      title: 'Mapa'
+    }
   }
 ];
 

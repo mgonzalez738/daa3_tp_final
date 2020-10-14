@@ -4,5 +4,5 @@ export class Project {
   public Name: string;
   public CreatedAt: Date;
 
-  constructor(){ }
+  constructor() { }
 }

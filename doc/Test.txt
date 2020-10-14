@@ -1,0 +1,11 @@
+Esp32-B
+-34.554498 
+-58.698309
+5f7e8761bf704300353b1ae7
+HostName=MonitoringHub.azure-devices.net;DeviceId=CEIoT-Esp32-B;SharedAccessKey=IQHA0PZMI4Vzjj1BkzaBXswSizjBLI2TKkcYr0haGTk=
+
+Prueba
+-38.102184
+-57.562799
+
+

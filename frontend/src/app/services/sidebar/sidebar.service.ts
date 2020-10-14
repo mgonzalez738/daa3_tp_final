@@ -31,9 +31,9 @@ export class SidebarService {
     this.authUser =this.authService.getAuthUser();
 
     // Vistas
-    item = { name: 'Vistas', url: '/sites', icon: 'icon-puzzle', children: [] };
-    item.children.push( { name: 'Vista Ejemplo', url: '/sites' } );
-    navItems.push(item);
+    //item = { name: 'Vistas', url: '/sites', icon: 'icon-puzzle', children: [] };
+    //item.children.push( { name: 'Vista Ejemplo', url: '/sites' } );
+    //navItems.push(item);
 
     // Graficas
     item = { name: 'Gráficas', url: '/charts', icon: 'icon-puzzle', children: [] };
@@ -49,8 +49,8 @@ export class SidebarService {
     navItems.push(item);
 
     // Dispositivos
-    item = { name: 'Dispositivos', url: '/devices', icon: 'icon-puzzle', children: [] };
-    item.children.push( { name: 'Temperatura', url: '/devices' } );
+    item = { name: 'Dispositivos', url: '/devices', icon: 'icon-puzzle', children: []};
+    item.children.push( { name: 'Temperatura Humedad', url: '/devices/temphum'} );
     navItems.push(item);
 
     // Configuracion
