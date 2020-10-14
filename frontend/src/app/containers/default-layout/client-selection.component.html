@@ -1,0 +1,20 @@
+<div class="btn-group w-100" dropdown >
+  <button style="height: 45px" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle btn-block btn-square text-left">
+    <i class="icon-briefcase ml-2 mr-2"></i>
+    {{ clientSelected?.Name || "Cliente "}}
+    <span class="caret"></span>
+    <div class="spinner-border float-right" style="height: 18px; width: 18px" *ngIf="isLoading"></div>
+  </button>
+  <ul *dropdownMenu class="dropdown-menu" role="menu">
+    <div *ngIf="clientList?.length!==0">
+      <li role="menuitem" *ngFor="let client of clientList" (click)="onClientSelectedChanged($event, client)">
+        <a class="dropdown-item" href="#">{{client.Name}}</a>
+      </li>
+    </div>
+    <div *ngIf="clientList?.length===0">
+      <li role="menuitem">
+        <a class="dropdown-item" >(vacio)</a>
+      </li>
+    </div>
+  </ul>
+</div>

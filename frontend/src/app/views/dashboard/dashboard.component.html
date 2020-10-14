@@ -1,0 +1,50 @@
+<div class="animated fadeIn" *ngIf="selectedProjectId" >
+
+  <!-- 1 sensor -->
+  <div class="row" *ngFor="let sensor of sensorTempHumList, let i = index">
+
+    <div class="col-sm-6 col-md-6 col-lg-4">
+      <div class="card text-white bg-info">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-12">
+              <span class="text-value">{{sensor?.Name}}</span>
+              <span class="spinner-border spinner-border-sm mb-1 ml-2" role="status" aria-hidden="true" *ngIf="!ledEnabled[i]"></span>
+              <label class="switch switch-3d switch-primary float-right mr-n2 ml-2 mt-1 mb-n1">
+                <input type="checkbox" class="switch-input" (change)="onLedChange($event, i) "[checked]="ledList[i]" [disabled]="!ledEnabled[i]">
+                <span class="switch-slider"></span>
+              </label>
+              <div class="float-right mt-1 mb-n1">Led</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-3">
+          <div class="row">
+            <div class="col-12">
+              <div>Timestamp</div>
+              <div class="text-value">{{dataTempHumList[i]?.Timestamp | date:'dd/MM/yy HH:mm:ss'}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div>Temperatura</div>
+              <div class="text-value">{{dataTempHumList[i]?.Temperature | number:'1.2-2'}} °C</div>
+            </div>
+            <div class="col-6">
+              <div>Humedad</div>
+              <div class="text-value">{{dataTempHumList[i]?.Humidity | number:'1.2-2'}} %</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-1">Ultimo Evento</div>
+              <div>{{eventTempHumList[i]?.Timestamp | date:'dd/MM/yy HH:mm:ss'}} {{eventTempHumList[i]?.Message}} </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

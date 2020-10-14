@@ -1,0 +1,97 @@
+<!-- Header -->
+<app-header
+  [navbarBrandRouterLink]="['/dashboard']"
+  [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/logogie.svg', width: 100, height: 40, alt: 'Gie Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/logogie2.svg', width: 30, height: 30, alt: 'Gie Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="false"
+  [mobileAsideMenuToggler]="false">
+
+  <!-- Menu alarmas y usuario-->
+  <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <img src="assets/img/brand/user.png" class="img-avatar" alt="Usuario"/>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown" >
+        <div class="card border-light mb-n1">
+          <div class="card-body mt-n2">
+            <h4 class="card-title text-primary">{{ authUser?.UserId }}</h4>
+            <span class="card-text" style="display: block">{{ authUser?.FirstName }}&nbsp;{{ authUser?.LastName }}</span>
+            <span class="card-text" style="display: block">{{ authUser?.Email }}</span>
+            <button type="button" class="btn btn-link float-right mb-n3 mr-n1" [routerLink]="['/users', authUser?.UserId]" *ngIf="authUser?.Role==='super' || authUser?.Role==='administrator'">Editar</button>
+          </div>
+        </div>
+        <a class="dropdown-item text-primary" href="#" (click)="onLogout()" ><i class="fa fa-lock text-primary mr-n1 mt-2 mb-n1"></i> Salir</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+
+<!-- Body -->
+<div class="app-body">
+
+  <!-- Left Sidebar -->
+
+  <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+
+    <!-- Boton Panel General -->
+    <dashboard-button
+    [enabled] = "authUser?.Client && authUser?.Project">
+    </dashboard-button>
+
+    <!-- Boton Clientes -->
+    <client-selection *ngIf="(authUser?.Role ==='super')"
+    [isLoading] = clientIsLoading
+    [clientList] = clients
+    [clientSelected] = authUser?.Client
+    (clientSelectedChanged)="onClientSelectedChanged($event)">
+    </client-selection>
+
+    <!-- Boton Proyectos -->
+    <project-selection *ngIf="authUser?.Client"
+    [isLoading] = projectIsLoading
+    [projectList] = projects
+    [projectSelected] = authUser?.Project
+    (projectSelectedChanged)="onProjectSelectedChanged($event)">
+    </project-selection>
+
+  <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized" *ngIf="authUser?.Client && authUser?.Project"></app-sidebar-nav>
+  </app-sidebar>
+
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <a class="btn text-primary" [routerLink]="['/map']">
+            <i class="icon-location-pin mr-1"></i>
+            Mapa
+          </a>
+          <a class="btn text-primary" [routerLink]="['/users']" *ngIf="authUser?.Role==='super' || authUser?.Role==='administrator'">
+            <i class="fa fa-user-o mr-1"></i>
+            Usuarios
+          </a>
+        </div>
+      </li>
+    </cui-breadcrumb>
+
+    <!-- Views-->
+    <div class="container-fluid" *ngIf="authUser?.Client && authUser?.Project">
+      <router-outlet></router-outlet>
+    </div><!-- /.container-fluid -->
+
+  </main>
+
+   <!-- Right Sidebar -->
+  <!--<app-aside [fixed]="true" [display]="false" [ngClass]="'test'"></app-aside>-->
+
+</div>
+
+ <!-- Footer -->
+<app-footer>
+  <span><a href="http://giegroup.net/">Gie Group </a> &copy; 2020</span>
+</app-footer>

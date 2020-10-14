@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/dfefdb93-fec5-4faa-849f-0b136b622e89/resourceGroups/Monitoring/providers/Microsoft.Web/sites/giemonitoring",
+    "appService.deploySubpath": "backend"
+}

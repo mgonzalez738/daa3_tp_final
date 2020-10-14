@@ -1,0 +1,20 @@
+<div class="btn-group w-100" dropdown >
+  <button style="height: 45px" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle btn-block btn-square text-left">
+    <i class="icon-folder ml-2 mr-2"></i>
+    {{ projectSelected?.Name || "Proyecto"}}
+    <span class="caret"></span>
+    <div class="spinner-border float-right" style="height: 18px; width: 18px" *ngIf="isLoading"></div>
+  </button>
+  <ul *dropdownMenu class="dropdown-menu" role="menu">
+    <div *ngIf="projectList?.length!==0">
+      <li role="menuitem" *ngFor="let project of projectList" (click)="onProjectSelectedChanged($event, project)">
+        <a class="dropdown-item" href="#">{{project.Name}}</a>
+      </li>
+    </div>
+    <div *ngIf="projectList?.length===0">
+      <li role="menuitem">
+        <a class="dropdown-item" ><i>(vacio)</i></a>
+      </li>
+    </div>
+  </ul>
+</div>

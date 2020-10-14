@@ -1,0 +1,56 @@
+<div class="animated fadeIn">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">{{sensor?.Name}}</a>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+    <button aria-controls="navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" class="navbar-toggler" type="button" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" [collapse]="isCollapsed" [isAnimated]="true">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Hour" id="option1" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Hora</label>
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Day" id="option2" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Día</label>
+        <label class="btn btn-outline-primary" [(ngModel)]="radioPeriod" btnRadio="Week" id="option3" (click)="onPeriodChange($event)" [ngClass]="{'disabled': isLoading }">Semana</label>
+      </div>
+      <button type="button" class="btn btn-primary" [ngClass]="{'disabled': isLoading }"><i class="icon-cloud-download"></i></button>
+    </div>
+  </nav>
+
+  <table class="table" *ngIf="loaded">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Mensaje</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let evt of event">
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{ evt.Timestamp }}</span></td>
+        <td class="align-left align-middle"><span style="white-space: nowrap; display:block">{{ evt.Message }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row align-middle justify-content-center" *ngIf="loaded">
+    <div class="col text-center">
+      <pagination
+        [totalItems]="dataTotalItems"
+        [itemsPerPage]="dataItemsPerPage"
+        [(ngModel)]="dataCurrentPage"
+        [maxSize]="paginatorMaxSize"
+        class="pagination justify-content-center"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+        [boundaryLinks]="true"
+        [rotate]="false"
+        (pageChanged)="pageChanged($event)">
+      </pagination>
+      <span class="text-primary" *ngIf="dataTotalItems > 0">Items {{dataFirstItemShown}} a {{ dataLastItemShown }} de {{ dataTotalItems }}</span>
+    </div>
+  </div>
+
+
+</div>
+

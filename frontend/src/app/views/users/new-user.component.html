@@ -1,0 +1,128 @@
+<div class="animated fadeIn">
+  <form class="mt-1" (submit)="OnOk(newUserForm)" #newUserForm="ngForm">
+
+    <div class="row">
+      <!-- Primer columna -->
+      <div class="col-md-6">
+        <!-- Grupo Usuario y Contraseña -->
+        <div class="row">
+          <div class="col">
+            <div class="card border-primary">
+              <div class="card-body">
+                <!-- Usuario -->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="username" name="username" class="form-control"  ngModel placeholder="Usuario" autocomplete="on" [ngClass]="{'is-invalid': usernameError }">
+                </div>
+                <div *ngIf="usernameError" class="text-danger mt-n3 mb-3"> {{ usernameErrorMessage }}</div>
+                <!-- Contraseña -->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" name="password" ngModel placeholder="Contraseña" [ngClass]="{'is-invalid': passwordError }">
+                </div>
+                <div *ngIf="passwordError" class="text-danger mt-n3 mb-3"> {{ passwordErrorMessage }}</div>
+                <!-- Repetir Contraseña -->
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" name="passwordRepeat" ngModel placeholder="Repetir Contraseña" [ngClass]="{'is-invalid': passwordRepeatError }">
+                </div>
+                <div *ngIf="passwordRepeatError" class="text-danger mb-n1">{{ passwordRepeatErrorMessage }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Datos Personales -->
+        <div class="row">
+          <div class="col">
+            <div class="card border-primary">
+              <div class="card-body">
+                <!-- Nombre -->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control" name="firstname" ngModel placeholder="Nombre" autocomplete="firstname" [ngClass]="{'is-invalid': firstnameError }">
+                </div>
+                <div *ngIf="firstnameError" class="text-danger mt-n3 mb-3">{{ firstnameErrorMessage }}</div>
+                <!-- Apellido -->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control" name="lastname" ngModel placeholder="Apellido" autocomplete="lastname" [ngClass]="{'is-invalid': lastnameError }">
+                </div>
+                <div *ngIf="lastnameError" class="text-danger mt-n3 mb-3">{{ lastnameErrorMessage }}</div>
+                <!-- Email -->
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-at"></i></span>
+                  </div>
+                  <input type="text" class="form-control" name="email" ngModel placeholder="Email" autocomplete="email" [ngClass]="{'is-invalid': emailError }">
+                </div>
+                <div *ngIf="emailError" class="text-danger mb-3">{{ emailErrorMessage }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Segunda Columna -->
+      <div class="col-md-6">
+        <!-- Rol y Proyectos -->
+        <div class="row">
+          <div class="col">
+            <div class="card border-primary">
+              <div class="card-body">
+                <!-- Rol -->
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-drivers-license-o"></i></span>
+                  </div>
+                    <select class="form-control" name="role" [(ngModel)]="roleSelected">
+                      <option value="guest">invitado</option>
+                      <option value="user">usuario</option>
+                      <option value="administrator">administrador</option>
+                      <option value="super" *ngIf="authUser?.Role==='super'">super</option>
+                    </select>
+                </div>
+                <!-- Clientes -->
+                <p class="text-muted mt-3" *ngIf="authUser?.Role==='super' && (roleSelected==='guest' || roleSelected==='user' || roleSelected==='administrator')">Cliente:</p>
+                <div class="input-group" *ngIf="authUser?.Role==='super' && (roleSelected==='guest' || roleSelected==='user' || roleSelected==='administrator')">
+                  <select class="form-control mt-n2" name="client" ngModel (ngModelChange)="onClientSelectChange($event)" >
+                    <option *ngFor="let client of clients" value={{client._id}}>{{client.Name}}</option>
+                  </select>
+                </div>
+                <!-- Proyectos -->
+                <p class="text-muted mt-3" *ngIf="roleSelected==='guest' || roleSelected==='user'">Proyectos:</p>
+                <div class="input-group" *ngIf="roleSelected==='guest' || roleSelected==='user'">
+                  <select class="form-control mt-n2" multiple name="projects" ngModel>
+                    <option *ngFor="let project of projects" value={{project._id}}>{{project.Name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-left">
+      <div class="col-sm-6 col-md-6">
+        <div *ngIf="storeError" class="text-danger mt-n2 mb-3"> {{ storeErrorMessage }}</div>
+        <button class="btn btn-secondary mr-2" routerLink="/users">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+          Aceptar
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

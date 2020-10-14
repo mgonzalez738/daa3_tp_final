@@ -1,0 +1,5 @@
+"TOA5","PB91 KP 91+150","CR1000X","4984","CR1000X.Std.03.02","CPU:FirmwareV3_Enc.CR1X","4594","PB91_Hourly"
+"TIMESTAMP","RECORD","VWSG1Frec","VWSG2Frec","VWSG3Frec","VWSG1Temp","VWSG2Temp","VWSG3Temp"
+"TS","RN","ustrain","ustrain","ustrain","degC","degC","degC"
+"","","Smp","Smp","Smp","Smp","Smp","Smp"
+"2020-02-15 17:00:00",1,322.01,619.40,559.59,19.8,19.9,19.9
