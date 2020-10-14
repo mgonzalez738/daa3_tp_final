@@ -7,12 +7,28 @@ const { querySkipIsInt, queryLimitIsInt, queryProjectIdIsMongoId, queryClientIdI
 
 // GETS
 
+router.get('/:sensorId/data/last',
+    [ 
+        Authorize('super', 'administrator', 'user', 'guest'),
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
+    ],
+    SensorTempHumController.indexDataLast 
+);
+
 router.get('/:sensorId/data',
     [ 
         Authorize('super', 'administrator', 'user', 'guest'),
         //paramProjectIdIsMongoId, queryPopulateIsBoolean
     ],
     SensorTempHumController.indexData 
+);
+
+router.get('/:sensorId/event/last',
+    [ 
+        Authorize('super', 'administrator', 'user', 'guest'),
+        //paramProjectIdIsMongoId, queryPopulateIsBoolean
+    ],
+    SensorTempHumController.indexEventLast 
 );
 
 router.get('/:sensorId/event',

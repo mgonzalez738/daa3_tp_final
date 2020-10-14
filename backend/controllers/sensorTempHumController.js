@@ -370,6 +370,36 @@ exports.indexData = async (req, res, next) => {
     }
 };
 
+exports.indexDataLast = async (req, res, next) => {
+    
+    // Valida los datos del pedido
+    let logMessage = `${req.method} (${req.originalUrl}) | Retrieve last data from ${dataCollectionName}`;  
+    try { 
+        validationHandler(req);
+    }
+    catch (error) {
+        logMessage += ' -> Validation Error';
+        Logger.Save(Levels.Warning, 'Api', logMessage, req.user._id); 
+        return next(new ErrorResponse(error.message, error.statusCode, error.validation));
+    }
+    Logger.Save(Levels.Debug, 'Api', logMessage, req.user._id); 
+    
+    // Procesa el pedido 
+    try {
+        // Busqueda
+        let data = await DataTempHum.findOne({SensorId: new mongoose.Types.ObjectId(req.params.sensorId)}).sort({Timestamp:-1});
+        
+        // Respuesta
+        Logger.Save(Levels.Info, 'Database', `Last data retrieved from ${dataCollectionName}`, req.user._id);
+        res.send( {Success: true, Data: data});
+        
+    // Errores inesperados
+    } catch (error) {
+        Logger.Save(Levels.Error, 'Database', `Error retrieving last data from ${dataCollectionName} -> ${error.message}`, req.user._id);
+        return next(error);
+    }
+};
+
 exports.indexEvent = async (req, res, next) => {
     
     // Valida los datos del pedido
@@ -449,6 +479,36 @@ exports.indexEvent = async (req, res, next) => {
     // Errores inesperados
     } catch (error) {
         Logger.Save(Levels.Error, 'Database', `Error retrieving events from ${eventCollectionName} -> ${error.message}`, req.user._id);
+        return next(error);
+    }
+};
+
+exports.indexEventLast = async (req, res, next) => {
+    
+    // Valida los datos del pedido
+    let logMessage = `${req.method} (${req.originalUrl}) | Retrieve last event from ${eventCollectionName}`;  
+    try { 
+        validationHandler(req);
+    }
+    catch (error) {
+        logMessage += ' -> Validation Error';
+        Logger.Save(Levels.Warning, 'Api', logMessage, req.user._id); 
+        return next(new ErrorResponse(error.message, error.statusCode, error.validation));
+    }
+    Logger.Save(Levels.Debug, 'Api', logMessage, req.user._id); 
+    
+    // Procesa el pedido 
+    try {
+        // Busqueda
+        let event = await EventTempHum.findOne({SensorId: new mongoose.Types.ObjectId(req.params.sensorId)}).sort({Timestamp:-1});
+        
+        // Respuesta
+        Logger.Save(Levels.Info, 'Database', `Last event retrieved from ${eventCollectionName}`, req.user._id);
+        res.send( {Success: true, Data: event});
+        
+    // Errores inesperados
+    } catch (error) {
+        Logger.Save(Levels.Error, 'Database', `Error retrieving last event from ${eventCollectionName} -> ${error.message}`, req.user._id);
         return next(error);
     }
 };

@@ -17,6 +17,13 @@ let registry = Registry.fromConnectionString("HostName=MonitoringHub.azure-devic
 let consumer = new EventHubConsumerClient(process.env.IOT_HUB_EVENT_CONSUMER_GROUP, process.env.IOT_HUB_EVENT_ENDPOINT);
 let client = Client.fromConnectionString("HostName=MonitoringHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=aOFsWnGlHYPBUyO+J4QJtrq7zXITgnxlHuOewLiyTpU=");
 
+var io;
+
+// Obtiene el objeto io desde el server
+exports.ioMsg = function(importIO) {
+    io = importIO;
+}
+
 exports.Suscribe = () => {
     consumer.subscribe({
         processEvents: processMessages,
@@ -47,6 +54,7 @@ var processMessages = function (messages) {
                         data.Humidity = message.body.Humidity;
                         data.SensorId = message.properties.id;
                         data.save();
+                        io.emit('data', data.toObject());
                         Logger.Save(Levels.Info, 'Database', `Telemetry data from ${data.SensorId} stored in ${DataTempHum.collection.collectionName}`);
                         return;
                     }
@@ -68,6 +76,7 @@ var processMessages = function (messages) {
                         event.Message = message.body.Event;
                         event.SensorId = message.properties.id;
                         event.save();
+                        io.emit('event', event.toObject());
                         Logger.Save(Levels.Info, 'Database', `Telemetry event from ${event.SensorId} stored in ${EventTempHum.collection.collectionName}`);
                         return;
                     }

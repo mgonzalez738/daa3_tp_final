@@ -23,7 +23,7 @@
     </div>
   </nav>
 
-  <div class="chart-wrapper" *ngIf="loaded && radioShow == 'Plot'" >
+  <div class="chart-wrapper mt-3" *ngIf="loaded && radioShow == 'Plot'" >
     <canvas baseChart class="chart" id="chart"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"

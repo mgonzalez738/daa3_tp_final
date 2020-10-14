@@ -67,6 +67,12 @@ export class SensorTempHumService {
     return res;
   }
 
+  // Obtiene los datos de un sensor
+  async getSensorsLastData(id: string): Promise<DataTempHum> {
+    let res = await this.http.get<{Data: DataTempHum}>(this.urlApi + "/sensors/temphum/" + id + '/data/last').toPromise();
+    return res.Data;
+  }
+
   // Obtiene los eventos de un sensor
   async getSensorsEvent(id: string, from: Date, to: Date, limit?: number, skip?: number): Promise<{Pagination: PaginationData, Data: EventTempHum[]}> {
     let query = `?from=${from}&to=${to}`;
@@ -78,6 +84,12 @@ export class SensorTempHumService {
     }
     let res = await this.http.get<{Pagination: PaginationData, Data: EventTempHum[]}>(this.urlApi + "/sensors/temphum/" + id + '/event' + query).toPromise();
     return res;
+  }
+
+  // Obtiene el ultimo evento del sensor
+  async getSensorLastEvent(id: string): Promise<EventTempHum> {
+    let res = await this.http.get<{Data: EventTempHum}>(this.urlApi + "/sensors/temphum/" + id + '/event/last').toPromise();
+    return res.Data;
   }
 
   async setLedStatus(id: string, status: boolean): Promise<void> {
