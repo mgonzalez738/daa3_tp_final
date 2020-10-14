@@ -14,6 +14,7 @@ import { TempHumLayoutComponent } from './temphum-layout.component';
 import { TempHumComponent } from './temphum.component';
 import { TempHumDataComponent } from './temphum-data.component';
 import { TempHumEventComponent } from './temphum-event.component';
+import { NewTempHumComponent } from './temphum-new.component';
 
 
 
@@ -32,7 +33,8 @@ import { TempHumEventComponent } from './temphum-event.component';
     TempHumLayoutComponent,
     TempHumComponent,
     TempHumDataComponent,
-    TempHumEventComponent
+    TempHumEventComponent,
+    NewTempHumComponent
   ]
 })
 

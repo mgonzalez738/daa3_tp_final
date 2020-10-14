@@ -12,8 +12,8 @@ const SensorSchema = new mongoose.Schema(
     _id: { type: mongoose.Schema.Types.ObjectId },
     Name: { type: String, required: true },
     Location: { 
-        latitude: { type: Number },
-        longitude: { type: Number }
+        Latitude: { type: Number },
+        Longitude: { type: Number }
     },
     ConnectionString: { type: String },
     Configuration: {

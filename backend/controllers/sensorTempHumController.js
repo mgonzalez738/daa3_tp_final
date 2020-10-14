@@ -167,9 +167,9 @@ exports.storeSensor = async (req, res, next) => {
     // Procesa el pedido
     try {
         // Datos del pedido
-        const { Name, Location, ProjectId, PrimaryKey } = req.body;
+        const { _id, Name, Location, ProjectId, PrimaryKey } = req.body;
         let { Configuration } = req.body;
-
+ 
         // Obtiene la informacion del proyecto
         let project = await Project.findById(ProjectId);
         if(!project) {
@@ -187,7 +187,9 @@ exports.storeSensor = async (req, res, next) => {
         // Crea los datos del dispositivo
         let deviceId = client.Tag + '-' + Name;
         let deviceType = 'SensorTempHum';
-        let _id = new mongoose.Types.ObjectId().toHexString();
+        if(!_id) {
+            _id = new mongoose.Types.ObjectId().toHexString();
+        }
         let tags = { Location };
          if(!Configuration) {
             Configuration = { PollPeriod: 1 }

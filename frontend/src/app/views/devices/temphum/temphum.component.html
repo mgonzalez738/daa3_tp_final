@@ -1,7 +1,7 @@
 <div class="animated fadeIn">
-  <div class="mb-3">
-    <button style="height: 35px; white-space: nowrap" type="button" class="btn btn-outline-primary">
-      Agregar
+  <div class="mb-3" *ngIf="authUser?.Role === 'super'">
+    <button style="height: 35px; white-space: nowrap" type="button" class="btn btn-outline-primary" [routerLink]="['./new']">
+      Nuevo
     </button>
   </div>
 
@@ -25,8 +25,8 @@
           <div style="white-space: nowrap; float: right;" >
             <button class="btn text-primary icon-graph ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Datos" (click)="onData($event, sensor)"></button>
             <button class="btn text-primary cui-tags ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eventos" (click)="onEvent($event, sensor)"></button>
-            <button class="btn text-primary icon-note ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Editar" (click)="onEdit($event, sensor)"></button>
-            <button class="btn text-primary cui-trash ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="onDeleteRequest($event, sensor)"></button>
+            <button class="btn text-primary icon-note ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Editar" (click)="onEdit($event, sensor)" *ngIf="authUser?.Role === 'super'"></button>
+            <button class="btn text-primary cui-trash ml-n2 mr-n2" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="onDeleteRequest($event, sensor)" *ngIf="authUser?.Role === 'super'"></button>
           </div>
         </td>
       </tr>

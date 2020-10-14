@@ -56,7 +56,6 @@ export class DashboardComponent implements OnInit {
         let et = await this.sensorTmpHumService.getSensorLastEvent(this.sensorTempHumList[i]._id,);
         this.eventTempHumList.push(et);
       }
-      console.log(this.eventTempHumList);
     }
     catch(error) {
       console.log(error);

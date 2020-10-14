@@ -47,7 +47,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     try {
       await this.authService.setAuthUser();
       this.authUser = this.authService.getAuthUser();
-      if(this.authUser.Project) {
+      if(this.authUser.Project && this.router.url === '/dashboard') {
         this.router.navigate([`dashboard`, this.authUser.Project._id]);
       }
     }

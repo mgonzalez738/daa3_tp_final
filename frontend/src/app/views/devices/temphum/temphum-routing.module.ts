@@ -5,7 +5,7 @@ import { TempHumLayoutComponent } from './temphum-layout.component';
 import { TempHumComponent } from './temphum.component';
 import { TempHumDataComponent } from './temphum-data.component';
 import { TempHumEventComponent } from './temphum-event.component';
-
+import { NewTempHumComponent } from './temphum-new.component'
 const routes: Routes = [
   {
     path: '',
@@ -14,6 +14,13 @@ const routes: Routes = [
       title: 'Temperatura Humedad'
     },
     children : [
+      {
+        path: 'new',
+        component: NewTempHumComponent,
+        data: {
+          title: 'Nuevo'
+        }
+      },
       {
         path: 'data/:sensorid',
         component: TempHumDataComponent,

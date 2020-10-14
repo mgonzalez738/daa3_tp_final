@@ -1,0 +1,64 @@
+<div class="animated fadeIn">
+  <form class="mt-1" (submit)="OnOk(newUserForm)" #newUserForm="ngForm">
+
+    <div class="row">
+      <!-- Primer columna -->
+      <div class="col-md-6">
+        <!-- Dispositivo -->
+        <div class="row">
+          <div class="col">
+            <div class="card border-primary">
+              <div class="card-body">
+                <!-- Usuario -->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="name" name="name" class="form-control"  ngModel placeholder="Nombre" autocomplete="on">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="latitude" name="latitude" class="form-control"  ngModel placeholder="Latitud" autocomplete="on">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="longitude" name="longitude" class="form-control"  ngModel placeholder="Longitud" autocomplete="on">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="id" name="id" class="form-control"  ngModel placeholder="Id" autocomplete="on">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" id="key" name="key" class="form-control"  ngModel placeholder="Cadena conexion" autocomplete="on">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-left">
+      <div class="col-sm-6 col-md-6">
+        <div *ngIf="storeError" class="text-danger mt-n2 mb-3"> {{ storeErrorMessage }}</div>
+        <button class="btn btn-secondary mr-2" routerLink="/devices/temphum">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+          Aceptar
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
