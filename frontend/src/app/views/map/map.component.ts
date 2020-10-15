@@ -8,7 +8,7 @@ import { SensorTempHum } from '../../models/sensorTempHumModel';
 
 @Component({
   templateUrl: 'map.component.html',
-  styles: ['#map {height: 70vh; width: 100%;}']
+
 })
 
 export class MapComponent implements OnInit, AfterViewInit {
