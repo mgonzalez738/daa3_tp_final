@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angula
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import { environment } from '../../../environments/environment';
 import * as atlas from 'azure-maps-control';
+import { ResizedEvent } from 'angular-resize-event';
 
 import { SensorTempHumService } from '../../services/sensorTempHum/sensorTempHum.service';
 import { SensorTempHum } from '../../models/sensorTempHumModel';
@@ -61,6 +62,26 @@ export class MapComponent implements OnInit, AfterViewInit {
       //showLogo: false,
     });
 
+    //Construct a zoom control and add it to the map.
+    this.map.controls.add(new atlas.control.ZoomControl(), {
+       position: 'bottom-right'
+    });
+
+    //Construct a pitch control and add it to the map.
+    this.map.controls.add(new atlas.control.PitchControl(), {
+      position: 'top-right'
+    });
+
+    //Construct a compass control and add it to the map.
+    this.map.controls.add(new atlas.control.CompassControl, {
+      position: 'top-right'
+    });
+
+    //Construct a compass control and add it to the map.
+    this.map.controls.add(new atlas.control.StyleControl, {
+      position: 'top-right'
+    });
+
     try {
       this.sensorList = await this.sensorTempHumService.getSensors();
     } catch (error) {
@@ -89,10 +110,21 @@ export class MapComponent implements OnInit, AfterViewInit {
         });
       }
 
+      this.map.map.resize();
+
 
   });
 
 
+
+
   }
+
+  onResized(event: ResizedEvent) {
+    this.map.map.resize();
+    this.map.setStyle({ 'style': 'road_shaded_relief' });
+  }
+
+
 
 }

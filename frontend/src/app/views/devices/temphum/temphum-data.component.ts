@@ -7,6 +7,7 @@ import { SensorTempHumService } from '../../../services/sensorTempHum/sensorTemp
 
 import { SensorTempHum, DataTempHum } from '../../../models/sensorTempHumModel';
 import { PaginationData } from '../../../models/paginationDataModel';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'tempHum-data.component.html',
@@ -39,6 +40,7 @@ export class TempHumDataComponent implements OnInit {
     animation: false,
     responsive: true,
     aspectRatio: 3,
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -77,7 +79,7 @@ export class TempHumDataComponent implements OnInit {
               minUnit: 'minute',
               displayFormats: {
                 hour: 'DD/MM/YY HH:mm',
-                minute: 'DD/MM/YY HH:mm'
+                minute: 'DD/MM/YY HH:mm',
               }
           },
           scaleLabel: {

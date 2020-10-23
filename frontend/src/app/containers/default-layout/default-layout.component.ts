@@ -82,6 +82,8 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;
+    console.log("minimize")
+    console.log(e)
   }
 
   onLogout() {
